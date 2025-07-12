@@ -5,13 +5,13 @@ from playsound import playsound
 def check_battery():
     try:
         prueba = subprocess.run(["acpi", "-b"], capture_output=True, text=True)
-        porcentaje = int(prueba.stdout[20:23].strip())
+        porcentaje = str(prueba.stdout[20:23].strip())
+        porcentajere = porcentaje.replace("%", "")
         carga = str(prueba.stdout[11:19].strip())
-        print(carga)
-        if porcentaje <= 20:
+        if int(porcentajere) <= 20:
             batNotify("Batería baja, por favor conecte el cargador")
             play_sound()
-        elif carga == "Charging" and porcentaje >= 99:
+        elif carga == "Charging" and int(porcentaje) >= 99:
             batNotify("Bateria completamente cargada, desconecte el cargador")
             play_sound()
     except:
